@@ -1,6 +1,7 @@
 import { Matrix, solve } from 'ml-matrix';
 
 import { ColorPoint } from 'models/ColorPoint';
+import { ConversionParameters } from 'models/ConversionParameters';
 
 interface XYZ {
   X: number;
@@ -22,17 +23,13 @@ export class XYZConverter {
   private inverseGamma: number;
 
   constructor(
-    redPoint: ColorPoint,
-    greenPoint: ColorPoint,
-    bluePoint: ColorPoint,
-    whitePoint: ColorPoint,
-    gamma: number
+    conversionParameters: ConversionParameters
   ) {
-    this.redPoint = redPoint;
-    this.greenPoint = greenPoint;
-    this.bluePoint = bluePoint;
-    this.whitePoint = whitePoint;
-    this.gamma = gamma;
+    this.redPoint = conversionParameters.redPoint;
+    this.greenPoint = conversionParameters.greenPoint;
+    this.bluePoint = conversionParameters.bluePoint;
+    this.whitePoint = conversionParameters.whitePoint;
+    this.gamma = conversionParameters.gamma;
 
     this.initialize();
   }
