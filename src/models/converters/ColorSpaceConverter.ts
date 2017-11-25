@@ -2,5 +2,5 @@ import { ColorSpaceConversionResult } from 'models/conversion-results/ColorSpace
 
 export interface ColorSpaceConverter {
   convertFromImageData(imageData: ImageData): ColorSpaceConversionResult;
-  convertFromRGB(r: number, b: number, g: number): ColorSpaceConversionResult;
+  convertFromRGB(r: number, g: number, b: number): ColorSpaceConversionResult;
 }
