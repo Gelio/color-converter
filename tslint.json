@@ -17,7 +17,7 @@
         "private-method-regex": "^[a-z][\\w\\d]+$",
         "protected-method-regex": "^[a-z][\\w\\d]+$",
         "static-method-regex": "^[a-z][\\w\\d]+$",
-        "function-regex": "^[a-z][\\w\\d]+$"
+        "function-regex": "^[A-Za-z][\\w\\d]+$"
       }
     ],
     "variable-name": [
@@ -27,6 +27,8 @@
       "ban-keywords"
     ],
     "no-suspicious-comment": false,
-    "quotemark": [true, "single", "avoid-escape", "avoid-template"]
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "no-multiline-string": false,
+    "no-relative-imports": false
   }
 }
