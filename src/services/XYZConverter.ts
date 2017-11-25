@@ -1,4 +1,4 @@
-import { multiplyMatrixByVector } from 'utils/multiplyMatrixByVector';
+import { Matrix } from 'ml-matrix';
 
 interface CIEXYZ {
   X: number;
@@ -7,22 +7,21 @@ interface CIEXYZ {
 }
 
 export class XYZConverter {
-  private readonly conversionMatrix: number[][] = [
+  private readonly conversionMatrix = new Matrix([
     [0.49, 0.31, 0.2],
     [0.17697, 0.8124, 0.01063],
     [0, 0.01, 0.99]
-  ];
+  ]);
   private readonly divisor = 0.17697;
 
   public rgbToXYZ(r: number, g: number, b: number): CIEXYZ {
-    const result = multiplyMatrixByVector(this.conversionMatrix, [r, g, b]).map(
-      value => value / this.divisor
-    );
+    const rgbVector = new Matrix([[r], [g], [b]]);
+    const result = Matrix.div(this.conversionMatrix.mmul(rgbVector), this.divisor);
 
     return {
-      X: result[0],
-      Y: result[1],
-      Z: result[2]
+      X: result[0][0],
+      Y: result[1][0],
+      Z: result[2][0]
     };
   }
 }
