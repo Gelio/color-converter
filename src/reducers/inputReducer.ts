@@ -1,12 +1,15 @@
 import { InputAction } from 'actions/input';
 import { CHANGE_ORIGINAL_IMAGE } from 'actions/input/changeOriginalImage';
+import { ColorSpaceType } from 'models/ColorSpaceType';
 
 export interface InputState {
   originalImage: HTMLImageElement | null;
+  selectedColorSpace: ColorSpaceType;
 }
 
 const defaultState: InputState = {
-  originalImage: null
+  originalImage: null,
+  selectedColorSpace: ColorSpaceType.YCbCr
 };
 
 export function inputReducer(

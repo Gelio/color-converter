@@ -1,18 +1,21 @@
 import { Component as HyperComponent } from 'hyperhtml/esm';
-import { HyperContainer } from 'utils/HyperContainer';
 
 import { ImagePicker } from 'components/ImagePicker';
+
+import { ColorSpacePicker } from 'containers/ColorSpacePicker';
 import { OriginalImageDisplay } from 'containers/OriginalImageDisplay';
 
 export class Application extends HyperComponent {
   private readonly imagePicker: ImagePicker;
-  private readonly originalImageDisplay: HyperContainer;
+  private readonly originalImageDisplay: OriginalImageDisplay;
+  private readonly colorSpacePicker: ColorSpacePicker;
 
   constructor() {
     super();
 
     this.imagePicker = new ImagePicker();
     this.originalImageDisplay = new OriginalImageDisplay();
+    this.colorSpacePicker = new ColorSpacePicker();
   }
 
   protected render() {
@@ -21,6 +24,7 @@ export class Application extends HyperComponent {
         <h1>Color converter</h1>
         ${this.imagePicker}
         ${this.originalImageDisplay}
+        ${this.colorSpacePicker}
       </div>
     `;
   }

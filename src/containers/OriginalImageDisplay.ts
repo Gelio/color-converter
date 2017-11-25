@@ -3,8 +3,18 @@ import { wire } from 'hyperhtml/esm';
 import { AppState } from 'appStore';
 import { HyperContainer } from 'utils/HyperContainer';
 
-function SelectImageMessage() {
+import './OriginalImageDisplay.scss';
+
+function NoImageMessage() {
   return wire()`Please select an image first.`;
+}
+
+function DisplayImage(image: HTMLImageElement) {
+  return wire()`
+    <div class="original-image-wrapper">
+      ${image}
+    </div>
+  `;
 }
 
 interface ContainerState {
@@ -23,8 +33,7 @@ export class OriginalImageDisplay extends HyperContainer<ContainerState> {
 
     return this.html`
       <div onconnected=${this} ondisconnected=${this}>
-        <h2>Original image</h2>
-        ${image ? image : SelectImageMessage()}
+        ${image ? DisplayImage(image) : NoImageMessage()}
       </div>
     `;
   }
