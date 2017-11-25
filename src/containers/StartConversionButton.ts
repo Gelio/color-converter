@@ -3,7 +3,7 @@ import { HyperContainer } from 'utils/HyperContainer';
 import { conversionFinished } from 'actions/general/conversionFinished';
 import { conversionStarted } from 'actions/general/conversionStarted';
 import { AppState, appStore } from 'appStore';
-import { YCbCrColorSpaceConverter } from 'models/converters/YCbCrColorSpaceConverter';
+import { LabColorSpaceConverter } from 'models/converters/LabColorSpaceConverter';
 import { ImageDataConverter } from 'services/ImageDataConverter';
 
 interface ContainerState {
@@ -46,8 +46,14 @@ export class StartConversionButton extends HyperContainer<ContainerState> {
     const imageDataConverter = new ImageDataConverter();
     const imageData = imageDataConverter.convertImageToImageData(this.state.image);
 
-    const hsvColorConverter = new YCbCrColorSpaceConverter();
-    const conversionResult = hsvColorConverter.convertFromImageData(imageData);
+    const labColorConverter = new LabColorSpaceConverter(
+      { x: 0.64, y: 0.33 },
+      { x: 0.3, y: 0.6 },
+      { x: 0.15, y: 0.06 },
+      { x: 0.3127, y: 0.329 },
+      2.2
+    );
+    const conversionResult = labColorConverter.convertFromImageData(imageData);
     conversionResult.normalizeComponents();
 
     const resultImages = conversionResult.components
