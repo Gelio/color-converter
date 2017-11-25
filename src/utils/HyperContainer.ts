@@ -7,6 +7,13 @@ export abstract class HyperContainer<
   ContainerState extends Dictionary = Dictionary
 > extends HyperComponent<ContainerState> {
   private storeUnsubscribeCallback: Unsubscribe | undefined;
+
+  constructor() {
+    super();
+
+    this.onStateUpdate(true);
+  }
+
   protected onconnected() {
     this.subscribeToStore();
   }
@@ -27,12 +34,16 @@ export abstract class HyperContainer<
 
   protected abstract mapAppStateToContainerState(appState: AppState): ContainerState;
 
-  private onStateUpdate() {
+  private onStateUpdate(ignoreRender: boolean = false) {
     const newContainerState = this.mapAppStateToContainerState(appStore.getState());
-    this.patchState(newContainerState);
+    const renderNeeded = this.patchState(newContainerState);
+
+    if (renderNeeded && !ignoreRender) {
+      this.render();
+    }
   }
 
-  private patchState(newState: Partial<ContainerState>) {
+  private patchState(newState: Partial<ContainerState>): boolean {
     let renderNeeded = false;
 
     for (const key of Object.keys(newState)) {
@@ -47,8 +58,6 @@ export abstract class HyperContainer<
       renderNeeded = true;
     }
 
-    if (renderNeeded) {
-      this.render();
-    }
+    return renderNeeded;
   }
 }
