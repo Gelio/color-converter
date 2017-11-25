@@ -31,3 +31,5 @@ declare module 'hyperhtml/esm' {
 }
 
 declare module 'hyperhtml/cjs';
+
+declare module 'ml-matrix';
