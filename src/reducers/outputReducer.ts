@@ -6,17 +6,20 @@ import { ColorSpaceConversionResult } from 'models/conversion-results/ColorSpace
 
 export interface OutputState {
   conversionResult: ColorSpaceConversionResult | null;
+  resultImages: HTMLImageElement[];
 }
 
 const defaultState: OutputState = {
-  conversionResult: null
+  conversionResult: null,
+  resultImages: []
 };
 
 export function outputReducer(state: OutputState = defaultState, action: AnyAction) {
   switch (action.type) {
     case CONVERSION_FINISHED:
       return Object.assign({}, state, {
-        conversionResult: action.conversionResult
+        conversionResult: action.conversionResult,
+        resultImages: action.resultImages
       });
 
     default:
