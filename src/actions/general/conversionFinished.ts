@@ -4,9 +4,13 @@ import { ColorSpaceConversionResult } from 'models/conversion-results/ColorSpace
 
 export const CONVERSION_FINISHED = 'CONVERSION_FINISHED';
 
-export function conversionFinished(conversionResult: ColorSpaceConversionResult): AnyAction {
+export function conversionFinished(
+  conversionResult: ColorSpaceConversionResult,
+  resultImages: HTMLImageElement[]
+): AnyAction {
   return {
     type: CONVERSION_FINISHED,
-    conversionResult
+    conversionResult,
+    resultImages
   };
 }

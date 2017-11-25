@@ -3,7 +3,7 @@ import { HyperContainer } from 'utils/HyperContainer';
 import { conversionFinished } from 'actions/general/conversionFinished';
 import { conversionStarted } from 'actions/general/conversionStarted';
 import { AppState, appStore } from 'appStore';
-import { LabColorSpaceConverter } from 'models/converters/LabColorSpaceConverter';
+import { createColorSpaceConverter } from 'models/converters/createColorSpaceConverter';
 import { ImageDataConverter } from 'services/ImageDataConverter';
 
 interface ContainerState {
@@ -45,23 +45,19 @@ export class StartConversionButton extends HyperContainer<ContainerState> {
 
     const imageDataConverter = new ImageDataConverter();
     const imageData = imageDataConverter.convertImageToImageData(this.state.image);
+    const appState = appStore.getState();
 
-    const labColorConverter = new LabColorSpaceConverter(
-      { x: 0.64, y: 0.33 },
-      { x: 0.3, y: 0.6 },
-      { x: 0.15, y: 0.06 },
-      { x: 0.3127, y: 0.329 },
-      2.2
+    const colorSpaceConverter = createColorSpaceConverter(
+      appState.input.selectedColorSpace,
+      appState.input.conversionParameters
     );
-    const conversionResult = labColorConverter.convertFromImageData(imageData);
+    const conversionResult = colorSpaceConverter.convertFromImageData(imageData);
     conversionResult.normalizeComponents();
 
     const resultImages = conversionResult.components
       .map(component => component.getImageData())
       .map(imageDataConverter.convertImageDataToImage);
 
-    resultImages.forEach(image => document.body.appendChild(image));
-
-    appStore.dispatch(conversionFinished(conversionResult));
+    appStore.dispatch(conversionFinished(conversionResult, resultImages));
   }
 }
