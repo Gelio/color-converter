@@ -1,9 +1,20 @@
+import { wire } from 'hyperhtml/esm';
 import { HyperContainer } from 'utils/HyperContainer';
 
 import { AppState, appStore } from 'appStore';
 import { ColorSpaceType } from 'models/ColorSpaceType';
 
 import { changeSelectedColorSpace } from 'actions/input/changeSelectedColorSpace';
+
+function ColorSpaceOption(
+  colorSpace: ColorSpaceType,
+  selectedColorSpace: ColorSpaceType,
+  label: string
+) {
+  return wire()`
+    <option value=${colorSpace} selected=${colorSpace === selectedColorSpace}>${label}</option>
+  `;
+}
 
 interface ContainerState {
   selectedColorSpace: ColorSpaceType;
@@ -23,13 +34,15 @@ export class ColorSpacePicker extends HyperContainer<ContainerState> {
   }
 
   protected render() {
+    const { selectedColorSpace } = this.state;
+
     return this.html`
       <div onconnected=${this} ondisconnected=${this}>
         <label for="color-space-picker">Target color space: </label>
         <select id="color-space-picker" onchange=${this.onColorSpaceChange}>
-          <option value="${ColorSpaceType.YCbCr}">YCbCr</option>
-          <option value="${ColorSpaceType.HSV}">HSV</option>
-          <option value="${ColorSpaceType.Lab}">Lab</option>
+          ${ColorSpaceOption(ColorSpaceType.YCbCr, selectedColorSpace, 'YCbCr')}
+          ${ColorSpaceOption(ColorSpaceType.HSV, selectedColorSpace, 'HSV')}
+          ${ColorSpaceOption(ColorSpaceType.Lab, selectedColorSpace, 'Lab')}
         </select>
       </div>
     `;
