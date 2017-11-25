@@ -3,9 +3,12 @@ import { HyperContainer } from 'utils/HyperContainer';
 import { conversionFinished } from 'actions/general/conversionFinished';
 import { conversionStarted } from 'actions/general/conversionStarted';
 import { AppState, appStore } from 'appStore';
+import { HSVColorSpaceConverter } from 'models/converters/HSVColorSpaceConverter';
+import { ImageDataConverter } from 'services/ImageDataConverter';
 
 interface ContainerState {
   conversionAvailable: boolean;
+  image: HTMLImageElement | null;
 }
 
 export class StartConversionButton extends HyperContainer<ContainerState> {
@@ -17,7 +20,8 @@ export class StartConversionButton extends HyperContainer<ContainerState> {
 
   protected mapAppStateToContainerState(appState: AppState): ContainerState {
     return {
-      conversionAvailable: appState.input.conversionAvailable
+      conversionAvailable: appState.input.conversionAvailable,
+      image: appState.input.originalImage
     };
   }
 
@@ -33,11 +37,27 @@ export class StartConversionButton extends HyperContainer<ContainerState> {
   }
 
   private startConversion() {
+    if (!this.state.image) {
+      return;
+    }
+
     appStore.dispatch(conversionStarted());
 
-    setTimeout(() => appStore.dispatch(conversionFinished({
-      components: [],
-      normalizeComponents: () => 'a'
-    })), 2000);
+    const imageDataConverter = new ImageDataConverter();
+    const imageData = imageDataConverter.convertImageToImageData(
+      this.state.image
+    );
+
+    const hsvColorConverter = new HSVColorSpaceConverter();
+    const conversionResult = hsvColorConverter.convertFromImageData(imageData);
+    conversionResult.normalizeComponents();
+
+    const resultImages = conversionResult
+      .getImageData()
+      .map(imageDataConverter.convertImageDataToImage);
+
+    resultImages.forEach(image => document.body.appendChild(image));
+
+    appStore.dispatch(conversionFinished(conversionResult));
   }
 }

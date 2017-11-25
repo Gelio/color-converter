@@ -16,4 +16,8 @@ export class YCbCrColorSpaceConversionResult
   public normalizeComponents() {
     throw new Error('Not implemented');
   }
+
+  public getImageData(): ImageData[] {
+    throw new Error('Not implemented');
+  }
 }
