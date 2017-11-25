@@ -4,6 +4,7 @@ import { ImagePicker } from 'components/ImagePicker';
 
 import { ColorSpacePicker } from 'containers/ColorSpacePicker';
 import { OriginalImageDisplay } from 'containers/OriginalImageDisplay';
+import { ResultsDisplay } from 'containers/ResultsDisplay';
 import { StartConversionButton } from 'containers/StartConversionButton';
 
 import { appStore } from 'appStore';
@@ -16,6 +17,7 @@ export class Application extends HyperComponent {
   private readonly originalImageDisplay: OriginalImageDisplay;
   private readonly colorSpacePicker: ColorSpacePicker;
   private readonly startConversionButton: StartConversionButton;
+  private readonly resultsDisplay: ResultsDisplay;
 
   constructor() {
     super();
@@ -24,6 +26,7 @@ export class Application extends HyperComponent {
     this.originalImageDisplay = new OriginalImageDisplay();
     this.colorSpacePicker = new ColorSpacePicker();
     this.startConversionButton = new StartConversionButton();
+    this.resultsDisplay = new ResultsDisplay();
 
     this.loadDefaultImage();
   }
@@ -36,6 +39,9 @@ export class Application extends HyperComponent {
         ${this.originalImageDisplay}
         ${this.colorSpacePicker}
         ${this.startConversionButton}
+        ${this.resultsDisplay}
+
+        <footer class="footer">Created by Grzegorz Rozdzialik @ 2017</footer>
       </div>
     `;
   }

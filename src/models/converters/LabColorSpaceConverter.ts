@@ -1,4 +1,3 @@
-import { ColorPoint } from 'models/ColorPoint';
 import { ColorSpaceConversionResult } from 'models/conversion-results/ColorSpaceConversionResult';
 import { LabColorSpaceConversionResult } from 'models/conversion-results/LabColorSpaceConversionResult';
 import { PartialConversionResult } from 'models/conversion-results/PartialConversionResult';
@@ -11,14 +10,8 @@ export class LabColorSpaceConverter implements ColorSpaceConverter {
   private readonly YR = 100;
   private readonly ZR = 107.3;
 
-  constructor(
-    redPoint: ColorPoint,
-    greenPoint: ColorPoint,
-    bluePoint: ColorPoint,
-    whitePoint: ColorPoint,
-    gamma: number
-  ) {
-    this.xyzConverter = new XYZConverter(redPoint, greenPoint, bluePoint, whitePoint, gamma);
+  constructor(xyzConverter: XYZConverter) {
+    this.xyzConverter = xyzConverter;
   }
 
   public convertFromImageData(imageData: ImageData): ColorSpaceConversionResult {

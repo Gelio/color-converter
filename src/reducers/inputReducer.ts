@@ -6,19 +6,22 @@ import { CHANGE_ORIGINAL_IMAGE } from 'actions/input/changeOriginalImage';
 import { CHANGE_SELECTED_COLOR_SPACE } from 'actions/input/changeSelectedColorSpace';
 
 import { ColorSpaceType } from 'models/ColorSpaceType';
+import { ConversionParameters } from 'models/ConversionParameters';
 
 export interface InputState {
   originalImage: HTMLImageElement | null;
   selectedColorSpace: ColorSpaceType;
   conversionAvailable: boolean;
   conversionInProgress: boolean;
+  conversionParameters: ConversionParameters;
 }
 
 const defaultState: InputState = {
   originalImage: null,
   selectedColorSpace: ColorSpaceType.YCbCr,
   conversionAvailable: false,
-  conversionInProgress: false
+  conversionInProgress: false,
+  conversionParameters: ConversionParameters.sRGB()
 };
 
 export function inputReducer(state: InputState = defaultState, action: AnyAction) {
