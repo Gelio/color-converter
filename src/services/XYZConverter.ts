@@ -1,27 +1,84 @@
-import { Matrix } from 'ml-matrix';
+import { Matrix, solve } from 'ml-matrix';
 
-interface CIEXYZ {
+import { ColorPoint } from 'models/ColorPoint';
+
+interface XYZ {
   X: number;
   Y: number;
   Z: number;
 }
 
+// tslint:disable variable-name
 export class XYZConverter {
-  private readonly conversionMatrix = new Matrix([
-    [0.49, 0.31, 0.2],
-    [0.17697, 0.8124, 0.01063],
-    [0, 0.01, 0.99]
-  ]);
-  private readonly divisor = 0.17697;
+  private readonly redPoint: ColorPoint;
+  private readonly greenPoint: ColorPoint;
+  private readonly bluePoint: ColorPoint;
+  private readonly whitePoint: ColorPoint;
+  private readonly gamma: number;
 
-  public rgbToXYZ(r: number, g: number, b: number): CIEXYZ {
-    const rgbVector = new Matrix([[r], [g], [b]]);
-    const result = Matrix.div(this.conversionMatrix.mmul(rgbVector), this.divisor);
+  private rgbMatrix: Matrix;
+  private SVector: Matrix;
+  private rgbToXYZMatrix: Matrix;
+  private inverseGamma: number;
+
+  constructor(
+    redPoint: ColorPoint,
+    greenPoint: ColorPoint,
+    bluePoint: ColorPoint,
+    whitePoint: ColorPoint,
+    gamma: number
+  ) {
+    this.redPoint = redPoint;
+    this.greenPoint = greenPoint;
+    this.bluePoint = bluePoint;
+    this.whitePoint = whitePoint;
+    this.gamma = gamma;
+
+    this.initialize();
+  }
+
+  public rgbToXYZ(r: number, g: number, b: number): XYZ {
+    const rgbVector = Matrix.columnVector([r, g, b]);
+    const result = this.rgbToXYZMatrix.mmul(rgbVector);
 
     return {
-      X: result[0][0],
-      Y: result[1][0],
-      Z: result[2][0]
+      X: this.applyGammaCorrection(result.get(0, 0)),
+      Y: this.applyGammaCorrection(result.get(1, 0)),
+      Z: this.applyGammaCorrection(result.get(2, 0))
     };
   }
+
+  private initialize() {
+    this.inverseGamma = 1 / this.gamma;
+
+    this.initializeRGBMatrix();
+
+    // Calculate Xw, Yw, Zw
+    const zw = 1 - this.whitePoint.x - this.whitePoint.y;
+    const Yw = 1;
+    const Xw = this.whitePoint.x / Yw / this.whitePoint.y;
+    const Zw = zw / this.whitePoint.y;
+    const XwYwZw = Matrix.columnVector([Xw, Yw, Zw]);
+
+    this.SVector = solve(this.rgbMatrix, XwYwZw);
+
+    this.rgbToXYZMatrix = this.rgbMatrix.mulRowVector(this.SVector);
+  }
+
+  private initializeRGBMatrix() {
+    const redPointZ = 1 - this.redPoint.x - this.redPoint.y;
+    const greenPointZ = 1 - this.greenPoint.x - this.greenPoint.y;
+    const bluePointZ = 1 - this.bluePoint.x - this.bluePoint.y;
+
+    this.rgbMatrix = new Matrix([
+      [this.redPoint.x, this.greenPoint.x, this.greenPoint.x],
+      [this.redPoint.y, this.greenPoint.y, this.bluePoint.y],
+      [redPointZ, greenPointZ, bluePointZ]
+    ]);
+  }
+
+  private applyGammaCorrection(v: number): number {
+    return Math.pow(v, this.inverseGamma);
+  }
 }
+// tslint:enable variable-name
