@@ -1,3 +1,5 @@
+import { mutateMap } from 'utils/mutateMap';
+
 import { ColorSpaceConversionResult } from './ColorSpaceConversionResult';
 import { PartialConversionResult } from './PartialConversionResult';
 
@@ -13,6 +15,10 @@ export class LabColorSpaceConversionResult implements ColorSpaceConversionResult
   }
 
   public normalizeComponents() {
-    throw new Error('Not implemented');
+    const [lComponent, aComponent, bComponent] = this.components;
+
+    mutateMap(lComponent.values, l => l / 100 * 255);
+    mutateMap(aComponent.values, a => a + 128);
+    mutateMap(bComponent.values, b => b + 128);
   }
 }
