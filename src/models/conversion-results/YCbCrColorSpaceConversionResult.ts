@@ -1,8 +1,7 @@
 import { ColorSpaceConversionResult } from './ColorSpaceConversionResult';
 import { PartialConversionResult } from './PartialConversionResult';
 
-export class YCbCrColorSpaceConversionResult
-  implements ColorSpaceConversionResult {
+export class YCbCrColorSpaceConversionResult implements ColorSpaceConversionResult {
   public readonly components: PartialConversionResult[];
 
   constructor(
@@ -14,10 +13,6 @@ export class YCbCrColorSpaceConversionResult
   }
 
   public normalizeComponents() {
-    throw new Error('Not implemented');
-  }
-
-  public getImageData(): ImageData[] {
-    throw new Error('Not implemented');
+    // Already normalized
   }
 }
