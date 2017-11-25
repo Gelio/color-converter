@@ -12,10 +12,7 @@ const defaultState: OutputState = {
   conversionResult: null
 };
 
-export function outputReducer(
-  state: OutputState = defaultState,
-  action: AnyAction
-) {
+export function outputReducer(state: OutputState = defaultState, action: AnyAction) {
   switch (action.type) {
     case CONVERSION_FINISHED:
       return Object.assign({}, state, {

@@ -1,6 +1,6 @@
-declare module "hyperhtml";
+declare module 'hyperhtml';
 
-declare module "hyperhtml/esm" {
+declare module 'hyperhtml/esm' {
   interface Dictionary {
     [key: string]: any;
   }
@@ -30,4 +30,4 @@ declare module "hyperhtml/esm" {
   export function hyper(): any;
 }
 
-declare module "hyperhtml/cjs";
+declare module 'hyperhtml/cjs';

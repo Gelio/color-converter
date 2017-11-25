@@ -3,5 +3,6 @@
     "hyperhtml",
     "onconnected",
     "ondisconnected"
-  ]
+  ],
+  "prettier.printWidth": 100
 }

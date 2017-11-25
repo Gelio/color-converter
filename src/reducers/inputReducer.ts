@@ -21,10 +21,7 @@ const defaultState: InputState = {
   conversionInProgress: false
 };
 
-export function inputReducer(
-  state: InputState = defaultState,
-  action: AnyAction
-) {
+export function inputReducer(state: InputState = defaultState, action: AnyAction) {
   switch (action.type) {
     case CHANGE_ORIGINAL_IMAGE:
       const newState = Object.assign({}, state, {
