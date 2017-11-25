@@ -3,8 +3,7 @@ import { mutateMap } from 'utils/mutateMap';
 import { ColorSpaceConversionResult } from './ColorSpaceConversionResult';
 import { PartialConversionResult } from './PartialConversionResult';
 
-export class HSVColorSpaceConversionResult
-  implements ColorSpaceConversionResult {
+export class HSVColorSpaceConversionResult implements ColorSpaceConversionResult {
   public readonly components: PartialConversionResult[];
 
   constructor(
