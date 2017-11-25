@@ -32,4 +32,22 @@ declare module 'hyperhtml/esm' {
 
 declare module 'hyperhtml/cjs';
 
-declare module 'ml-matrix';
+declare module 'ml-matrix' {
+  export class Matrix {
+    static rowVector(array: number[]): Matrix;
+    static columnVector(array: number[]): Matrix;
+
+    constructor(rows: number, columns: number);
+    constructor(matrix: number[][]);
+    constructor(matrix: Matrix);
+
+    inverse(): Matrix;
+    set(rowIndex: number, columnIndex: number, value: number): Matrix;
+    get(rowIndex: number, columnIndex: number): number;
+    mmul(other: Matrix): Matrix;
+    mulRowVector(vector: (number[][] | Matrix)): Matrix;
+    transpose(): Matrix;
+  }
+
+  export function solve(leftHandSide: Matrix, rightHandSide: Matrix, useSVD?: boolean): Matrix
+}
