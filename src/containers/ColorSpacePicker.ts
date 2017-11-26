@@ -1,26 +1,23 @@
-import { wire } from 'hyperhtml/esm';
 import { HyperContainer } from 'utils/HyperContainer';
 
 import { AppState, appStore } from 'appStore';
 import { ColorSpaceType } from 'models/ColorSpaceType';
 
 import { changeSelectedColorSpace } from 'actions/input/changeSelectedColorSpace';
-
-function ColorSpaceOption(
-  colorSpace: ColorSpaceType,
-  selectedColorSpace: ColorSpaceType,
-  label: string
-) {
-  return wire()`
-    <option value=${colorSpace} selected=${colorSpace === selectedColorSpace}>${label}</option>
-  `;
-}
+import { LabeledSelect } from 'components/LabeledSelect';
+import { LabeledValue } from 'utils/LabeledValue';
 
 interface ContainerState {
   selectedColorSpace: ColorSpaceType;
 }
 
 export class ColorSpacePicker extends HyperContainer<ContainerState> {
+  private readonly labeledColorSpaces: LabeledValue<ColorSpaceType>[] = [
+    { value: ColorSpaceType.YCbCr, label: 'YCbCr' },
+    { value: ColorSpaceType.HSV, label: 'HSV' },
+    { value: ColorSpaceType.Lab, label: 'Lab' }
+  ];
+
   constructor() {
     super();
 
@@ -38,20 +35,18 @@ export class ColorSpacePicker extends HyperContainer<ContainerState> {
 
     return this.html`
       <div onconnected=${this} ondisconnected=${this}>
-        <label for="color-space-picker">Target color space: </label>
-        <select id="color-space-picker" onchange=${this.onColorSpaceChange}>
-          ${ColorSpaceOption(ColorSpaceType.YCbCr, selectedColorSpace, 'YCbCr')}
-          ${ColorSpaceOption(ColorSpaceType.HSV, selectedColorSpace, 'HSV')}
-          ${ColorSpaceOption(ColorSpaceType.Lab, selectedColorSpace, 'Lab')}
-        </select>
+        <label for="color-space-select">Target color space: </label>
+        ${LabeledSelect(
+          'color-space-select',
+          this.labeledColorSpaces,
+          selectedColorSpace,
+          this.onColorSpaceChange
+        )}
       </div>
     `;
   }
 
-  private onColorSpaceChange(event: Event) {
-    const selectElement = <HTMLSelectElement>event.target;
-    const newColorSpace: ColorSpaceType = parseInt(selectElement.value, 10);
-
+  private onColorSpaceChange(newColorSpace: ColorSpaceType) {
     appStore.dispatch(changeSelectedColorSpace(newColorSpace));
   }
 }
