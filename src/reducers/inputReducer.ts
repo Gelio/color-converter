@@ -1,19 +1,21 @@
 import { AnyAction } from 'redux';
 
 import { configuration } from 'configuration';
+import { mergeState } from 'utils/mergeState';
 
 import { CONVERSION_FINISHED } from 'actions/general/conversionFinished';
 import { CONVERSION_STARTED } from 'actions/general/conversionStarted';
 import { CHANGE_COLOR_PROFILE_TYPE } from 'actions/input/changeColorProfileType';
+import { CHANGE_CONVERSION_PARAMETERS } from 'actions/input/changeConversionParameters';
+import { CHANGE_ILLUMINANT_TYPE } from 'actions/input/changeIlluminantType';
 import { CHANGE_ORIGINAL_IMAGE } from 'actions/input/changeOriginalImage';
 import { CHANGE_SELECTED_COLOR_SPACE } from 'actions/input/changeSelectedColorSpace';
+import { CHANGE_WHITE_POINT } from 'actions/input/changeWhitePoint';
 
 import { ColorProfileType } from 'models/ColorProfileType';
 import { ColorSpaceType } from 'models/ColorSpaceType';
 import { ConversionParameters } from 'models/ConversionParameters';
-import { IlluminantType } from 'models/lluminantType';
-import { mergeState } from 'utils/mergeState';
-import { CHANGE_ILLUMINANT_TYPE } from 'actions/input/changeIlluminantType';
+import { IlluminantType } from 'models/IlluminantType';
 
 export interface InputState {
   originalImage: HTMLImageElement | null;
@@ -72,6 +74,24 @@ export function inputReducer(state: InputState = defaultState, action: AnyAction
     case CHANGE_ILLUMINANT_TYPE:
       return mergeState(state, {
         illuminantType: action.illuminantType
+      });
+
+    case CHANGE_WHITE_POINT:
+      const currentConversionParameters = state.conversionParameters;
+
+      return mergeState(state, {
+        conversionParameters: new ConversionParameters(
+          currentConversionParameters.redPoint,
+          currentConversionParameters.greenPoint,
+          currentConversionParameters.bluePoint,
+          action.whitePoint,
+          currentConversionParameters.gamma
+        )
+      });
+
+    case CHANGE_CONVERSION_PARAMETERS:
+      return mergeState(state, {
+        conversionParameters: action.conversionParameters
       });
 
     default:
