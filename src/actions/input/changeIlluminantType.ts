@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 
-import { IlluminantType } from 'models/lluminantType';
+import { IlluminantType } from 'models/IlluminantType';
 
 export const CHANGE_ILLUMINANT_TYPE = 'CHANGE_ILLUMINANT_TYPE';
 
