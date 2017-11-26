@@ -6,11 +6,9 @@ import { mergeState } from 'utils/mergeState';
 import { CONVERSION_FINISHED } from 'actions/general/conversionFinished';
 import { CONVERSION_STARTED } from 'actions/general/conversionStarted';
 import { CHANGE_COLOR_PROFILE_TYPE } from 'actions/input/changeColorProfileType';
-import { CHANGE_CONVERSION_PARAMETERS } from 'actions/input/changeConversionParameters';
 import { CHANGE_ILLUMINANT_TYPE } from 'actions/input/changeIlluminantType';
 import { CHANGE_ORIGINAL_IMAGE } from 'actions/input/changeOriginalImage';
 import { CHANGE_SELECTED_COLOR_SPACE } from 'actions/input/changeSelectedColorSpace';
-import { CHANGE_WHITE_POINT } from 'actions/input/changeWhitePoint';
 
 import { ColorProfileType } from 'models/ColorProfileType';
 import { ColorSpaceType } from 'models/ColorSpaceType';
@@ -68,18 +66,17 @@ export function inputReducer(state: InputState = defaultState, action: AnyAction
 
     case CHANGE_COLOR_PROFILE_TYPE:
       return mergeState(state, {
-        colorProfileType: action.colorProfileType
+        colorProfileType: action.colorProfileType,
+        illuminantType: IlluminantType.Custom,
+        conversionParameters: action.conversionParameters
       });
 
     case CHANGE_ILLUMINANT_TYPE:
-      return mergeState(state, {
-        illuminantType: action.illuminantType
-      });
-
-    case CHANGE_WHITE_POINT:
       const currentConversionParameters = state.conversionParameters;
 
       return mergeState(state, {
+        illuminantType: action.illuminantType,
+        colorProfileType: ColorProfileType.Custom,
         conversionParameters: new ConversionParameters(
           currentConversionParameters.redPoint,
           currentConversionParameters.greenPoint,
@@ -87,11 +84,6 @@ export function inputReducer(state: InputState = defaultState, action: AnyAction
           action.whitePoint,
           currentConversionParameters.gamma
         )
-      });
-
-    case CHANGE_CONVERSION_PARAMETERS:
-      return mergeState(state, {
-        conversionParameters: action.conversionParameters
       });
 
     default:

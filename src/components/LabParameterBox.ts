@@ -9,18 +9,16 @@ import { ConversionParameters } from 'models/ConversionParameters';
 import { IlluminantType, labeledIlluminants, predefinedIlluminants } from 'models/IlluminantType';
 
 import { changeColorProfileType } from 'actions/input/changeColorProfileType';
-import { changeConversionParameters } from 'actions/input/changeConversionParameters';
 import { changeIlluminantType } from 'actions/input/changeIlluminantType';
-import { changeWhitePoint } from 'actions/input/changeWhitePoint';
 
 import { appStore } from 'appStore';
 import { LabeledSelect } from 'components/LabeledSelect';
+import { ColorPoint } from 'models/ColorPoint';
 
-function onIlluminantChange(newIlluminant: IlluminantType) {
-  appStore.dispatch(changeIlluminantType(newIlluminant));
-  appStore.dispatch(changeColorProfileType(ColorProfileType.Custom));
-
+function onIlluminantChange(currentWhitePoint: ColorPoint, newIlluminant: IlluminantType) {
   if (newIlluminant === IlluminantType.Custom) {
+    appStore.dispatch(changeIlluminantType(newIlluminant, currentWhitePoint));
+
     return;
   }
 
@@ -31,14 +29,16 @@ function onIlluminantChange(newIlluminant: IlluminantType) {
     throw new Error('Selected illuminant not found in predefined ones');
   }
 
-  appStore.dispatch(changeWhitePoint(foundIlluminant.whitePoint()));
+  appStore.dispatch(changeIlluminantType(newIlluminant, foundIlluminant.whitePoint()));
 }
 
-function onColorProfileChange(newColorProfile: ColorProfileType) {
-  appStore.dispatch(changeColorProfileType(newColorProfile));
-  appStore.dispatch(changeIlluminantType(IlluminantType.Custom));
-
+function onColorProfileChange(
+  currentConversionParameters: ConversionParameters,
+  newColorProfile: ColorProfileType
+) {
   if (newColorProfile === ColorProfileType.Custom) {
+    appStore.dispatch(changeColorProfileType(newColorProfile, currentConversionParameters));
+
     return;
   }
 
@@ -49,7 +49,7 @@ function onColorProfileChange(newColorProfile: ColorProfileType) {
     throw new Error('Selected color profile not found in predefined ones');
   }
 
-  appStore.dispatch(changeConversionParameters(foundColorProfile.parameters()));
+  appStore.dispatch(changeColorProfileType(newColorProfile, foundColorProfile.parameters()));
 }
 
 export function LabParameterBox(
@@ -60,12 +60,22 @@ export function LabParameterBox(
   return wire()`
     <div>
       <label for="illuminant-type-select">Illuminant type: </label>
-      ${LabeledSelect('illuminant-type-select', labeledIlluminants, illuminantType, onIlluminantChange)}
+      ${LabeledSelect(
+        'illuminant-type-select',
+        labeledIlluminants,
+        illuminantType,
+        onIlluminantChange.bind(null, conversionParameters.whitePoint)
+      )}
     </div>
 
     <div>
       <label for="color-profile-select">Color profile: </label>
-      ${LabeledSelect('color-profile-select', labeledColorProfiles, colorProfileType, onColorProfileChange)}
+      ${LabeledSelect(
+        'color-profile-select',
+        labeledColorProfiles,
+        colorProfileType,
+        onColorProfileChange.bind(null, conversionParameters)
+      )}
     </div>
 
     <pre>${JSON.stringify(conversionParameters, null, 2)}</pre>
