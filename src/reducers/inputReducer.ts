@@ -1,5 +1,7 @@
 import { AnyAction } from 'redux';
 
+import { configuration } from 'configuration';
+
 import { CONVERSION_FINISHED } from 'actions/general/conversionFinished';
 import { CONVERSION_STARTED } from 'actions/general/conversionStarted';
 import { CHANGE_ORIGINAL_IMAGE } from 'actions/input/changeOriginalImage';
@@ -18,10 +20,10 @@ export interface InputState {
 
 const defaultState: InputState = {
   originalImage: null,
-  selectedColorSpace: ColorSpaceType.YCbCr,
+  selectedColorSpace: configuration.defaultColorSpace,
   conversionAvailable: false,
   conversionInProgress: false,
-  conversionParameters: ConversionParameters.sRGB()
+  conversionParameters: configuration.defaultConversionParameters
 };
 
 export function inputReducer(state: InputState = defaultState, action: AnyAction) {

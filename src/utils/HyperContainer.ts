@@ -1,11 +1,12 @@
-import { Component as HyperComponent, Dictionary } from 'hyperhtml/esm';
+import { Dictionary } from 'hyperhtml/esm';
 import { Unsubscribe } from 'redux';
 
 import { AppState, appStore } from 'appStore';
+import { HyperComponent } from 'utils/HyperComponent';
 
-export abstract class HyperContainer<
-  ContainerState extends Dictionary = Dictionary
-> extends HyperComponent<ContainerState> {
+export abstract class HyperContainer<ContainerState extends Dictionary> extends HyperComponent<
+  ContainerState
+> {
   private storeUnsubscribeCallback: Unsubscribe | undefined;
 
   constructor() {
