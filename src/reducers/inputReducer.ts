@@ -4,11 +4,16 @@ import { configuration } from 'configuration';
 
 import { CONVERSION_FINISHED } from 'actions/general/conversionFinished';
 import { CONVERSION_STARTED } from 'actions/general/conversionStarted';
+import { CHANGE_COLOR_PROFILE_TYPE } from 'actions/input/changeColorProfileType';
 import { CHANGE_ORIGINAL_IMAGE } from 'actions/input/changeOriginalImage';
 import { CHANGE_SELECTED_COLOR_SPACE } from 'actions/input/changeSelectedColorSpace';
 
+import { ColorProfileType } from 'models/ColorProfileType';
 import { ColorSpaceType } from 'models/ColorSpaceType';
 import { ConversionParameters } from 'models/ConversionParameters';
+import { IlluminantType } from 'models/lluminantType';
+import { mergeState } from 'utils/mergeState';
+import { CHANGE_ILLUMINANT_TYPE } from 'actions/input/changeIlluminantType';
 
 export interface InputState {
   originalImage: HTMLImageElement | null;
@@ -16,6 +21,9 @@ export interface InputState {
   conversionAvailable: boolean;
   conversionInProgress: boolean;
   conversionParameters: ConversionParameters;
+
+  colorProfileType: ColorProfileType;
+  illuminantType: IlluminantType;
 }
 
 const defaultState: InputState = {
@@ -23,13 +31,16 @@ const defaultState: InputState = {
   selectedColorSpace: configuration.defaultColorSpace,
   conversionAvailable: false,
   conversionInProgress: false,
-  conversionParameters: configuration.defaultConversionParameters
+  conversionParameters: configuration.defaultConversionParameters,
+
+  colorProfileType: ColorProfileType.sRGB,
+  illuminantType: IlluminantType.Custom
 };
 
-export function inputReducer(state: InputState = defaultState, action: AnyAction) {
+export function inputReducer(state: InputState = defaultState, action: AnyAction): InputState {
   switch (action.type) {
     case CHANGE_ORIGINAL_IMAGE:
-      const newState = Object.assign({}, state, {
+      const newState = mergeState(state, {
         originalImage: action.image
       });
       newState.conversionAvailable = isConversionAvailable(newState);
@@ -37,20 +48,30 @@ export function inputReducer(state: InputState = defaultState, action: AnyAction
       return newState;
 
     case CHANGE_SELECTED_COLOR_SPACE:
-      return Object.assign({}, state, {
+      return mergeState(state, {
         selectedColorSpace: action.colorSpace
       });
 
     case CONVERSION_STARTED:
-      return Object.assign({}, state, {
+      return mergeState(state, {
         conversionAvailable: false,
         conversionInProgress: true
       });
 
     case CONVERSION_FINISHED:
-      return Object.assign({}, state, {
+      return mergeState(state, {
         conversionAvailable: true,
         conversionInProgress: false
+      });
+
+    case CHANGE_COLOR_PROFILE_TYPE:
+      return mergeState(state, {
+        colorProfileType: action.colorProfileType
+      });
+
+    case CHANGE_ILLUMINANT_TYPE:
+      return mergeState(state, {
+        illuminantType: action.illuminantType
       });
 
     default:
