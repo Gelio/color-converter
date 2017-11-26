@@ -1,4 +1,4 @@
-import { Component as HyperComponent } from 'hyperhtml/esm';
+import { HyperComponent } from 'utils/HyperComponent';
 
 import { appStore } from 'appStore';
 import { FileToImageConverter } from 'services/FileToImageConverter';
