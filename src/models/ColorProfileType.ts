@@ -1,4 +1,5 @@
 import { ConversionParameters } from 'models/ConversionParameters';
+import { LabeledValue } from 'utils/LabeledValue';
 
 export enum ColorProfileType {
   sRGB,
@@ -22,4 +23,14 @@ export const predefinedColorProfiles: PredefinedColorProfile[] = [
   { colorProfileType: ColorProfileType.CIERGB, parameters: ConversionParameters.cieRGB },
   { colorProfileType: ColorProfileType.WideGamut, parameters: ConversionParameters.wideGamut },
   { colorProfileType: ColorProfileType.PAL, parameters: ConversionParameters.pal }
+];
+
+export const labeledColorProfiles: LabeledValue<ColorProfileType>[] = [
+  { value: ColorProfileType.AdobeRGB, label: 'AdobeRGB' },
+  { value: ColorProfileType.AppleRGB, label: 'AppleRGB' },
+  { value: ColorProfileType.sRGB, label: 'sRGB' },
+  { value: ColorProfileType.CIERGB, label: 'CIERGB' },
+  { value: ColorProfileType.WideGamut, label: 'WideGamut' },
+  { value: ColorProfileType.PAL, label: 'PAL' },
+  { value: ColorProfileType.Custom, label: 'Custom' }
 ];
