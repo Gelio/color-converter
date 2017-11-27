@@ -42,9 +42,9 @@ export class XYZConverter {
     const result = this.rgbToXYZMatrix.mmul(rgbVector);
 
     return {
-      X: result.get(0, 0) * 255,
-      Y: result.get(1, 0) * 255,
-      Z: result.get(2, 0) * 255
+      X: result.get(0, 0) * 100,
+      Y: result.get(1, 0) * 100,
+      Z: result.get(2, 0) * 100
     };
   }
 
