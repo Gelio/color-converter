@@ -24,7 +24,7 @@ function Results(conversionResult: ColorSpaceConversionResult, resultImages: HTM
 function Result(partialResult: PartialConversionResult, image: HTMLImageElement) {
   return wire(partialResult)`
     <div class="result">
-      <div>${partialResult.label}</div>
+      <div class="result__label">${partialResult.label}</div>
       ${image}
     </div>
   `;
