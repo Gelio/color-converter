@@ -949,7 +949,7 @@ cookie@0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
 
-copy-webpack-plugin@^4.1.1:
+copy-webpack-plugin@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-4.2.3.tgz#4a3c61089f3b635777f0f0af346c338b39d63755"
   dependencies:
@@ -3309,6 +3309,27 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
+ml-array-max@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ml-array-max/-/ml-array-max-1.0.1.tgz#bd6213b1e0fdccf0eebb9c9a677c2d2405a92181"
+
+ml-array-min@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ml-array-min/-/ml-array-min-1.0.1.tgz#544b71ee0b2f38e6093e6a5964af8a6daff22f28"
+
+ml-array-rescale@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ml-array-rescale/-/ml-array-rescale-1.1.0.tgz#e5a6aaff247865d1e1c8acfb8ef630fe5df1e3a2"
+  dependencies:
+    ml-array-max "^1.0.1"
+    ml-array-min "^1.0.1"
+
+ml-matrix@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/ml-matrix/-/ml-matrix-5.0.1.tgz#2cb1f20b33ed8a0475dadd68ca7a6f7da5c5482c"
+  dependencies:
+    ml-array-rescale "^1.1.0"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -5323,7 +5344,7 @@ webpack-dev-middleware@^1.11.0:
     range-parser "^1.0.3"
     time-stamp "^2.0.0"
 
-webpack-dev-server@^2.9.1:
+webpack-dev-server@^2.9.4:
   version "2.9.4"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.4.tgz#7883e61759c6a4b33e9b19ec4037bd4ab61428d1"
   dependencies:
@@ -5362,7 +5383,7 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^3.6.0:
+webpack@^3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.8.1.tgz#b16968a81100abe61608b0153c9159ef8bb2bd83"
   dependencies:
