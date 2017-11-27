@@ -20,7 +20,6 @@ export class XYZConverter {
   private rgbMatrix: Matrix;
   private SVector: Matrix;
   private rgbToXYZMatrix: Matrix;
-  private inverseGamma: number;
 
   constructor(
     conversionParameters: ConversionParameters
@@ -35,19 +34,21 @@ export class XYZConverter {
   }
 
   public rgbToXYZ(r: number, g: number, b: number): XYZ {
-    const rgbVector = Matrix.columnVector([r, g, b]);
+    const rgbVector = Matrix.columnVector([
+      this.applyGammaCorrection(r / 255),
+      this.applyGammaCorrection(g / 255),
+      this.applyGammaCorrection(b / 255)
+    ]);
     const result = this.rgbToXYZMatrix.mmul(rgbVector);
 
     return {
-      X: this.applyGammaCorrection(result.get(0, 0)),
-      Y: this.applyGammaCorrection(result.get(1, 0)),
-      Z: this.applyGammaCorrection(result.get(2, 0))
+      X: result.get(0, 0) * 255,
+      Y: result.get(1, 0) * 255,
+      Z: result.get(2, 0) * 255
     };
   }
 
   private initialize() {
-    this.inverseGamma = 1 / this.gamma;
-
     this.initializeRGBMatrix();
 
     // Calculate Xw, Yw, Zw
@@ -75,7 +76,7 @@ export class XYZConverter {
   }
 
   private applyGammaCorrection(v: number): number {
-    return Math.pow(v, this.inverseGamma);
+    return Math.pow(v, this.gamma);
   }
 }
 // tslint:enable variable-name
