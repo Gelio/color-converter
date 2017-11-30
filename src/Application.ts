@@ -12,13 +12,13 @@ import { configuration } from 'configuration';
 import { ImageLoader } from 'services/ImageLoader';
 
 import { changeOriginalImage } from 'actions/input/changeOriginalImage';
-import { ConversionParameterBox } from 'containers/ConversionParameterBox';
+import { ConversionParametersBox } from 'containers/ConversionParametersBox';
 
 export class Application extends HyperComponent {
   private readonly imagePicker: ImagePicker;
   private readonly originalImageDisplay: OriginalImageDisplay;
   private readonly colorSpacePicker: ColorSpacePicker;
-  private readonly conversionParameterBox: ConversionParameterBox;
+  private readonly conversionParameterBox: ConversionParametersBox;
   private readonly startConversionButton: StartConversionButton;
   private readonly resultsDisplay: ResultsDisplay;
 
@@ -28,7 +28,7 @@ export class Application extends HyperComponent {
     this.imagePicker = new ImagePicker();
     this.originalImageDisplay = new OriginalImageDisplay();
     this.colorSpacePicker = new ColorSpacePicker();
-    this.conversionParameterBox = new ConversionParameterBox();
+    this.conversionParameterBox = new ConversionParametersBox();
     this.startConversionButton = new StartConversionButton();
     this.resultsDisplay = new ResultsDisplay();
 

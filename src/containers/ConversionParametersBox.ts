@@ -1,7 +1,7 @@
 import { HyperContainer } from 'utils/HyperContainer';
 
 import { AppState } from 'appStore';
-import { LabParameterBox } from 'components/LabParameterBox';
+import { LabParametersBox } from 'components/LabParametersBox';
 import { ColorProfileType } from 'models/ColorProfileType';
 import { ColorSpaceType } from 'models/ColorSpaceType';
 import { ConversionParameters } from 'models/ConversionParameters';
@@ -14,7 +14,7 @@ interface ContainerState {
   colorProfileType: ColorProfileType;
 }
 
-export class ConversionParameterBox extends HyperContainer<ContainerState> {
+export class ConversionParametersBox extends HyperContainer<ContainerState> {
   protected mapAppStateToContainerState(appState: AppState): ContainerState {
     return {
       selectedColorSpace: appState.input.selectedColorSpace,
@@ -27,19 +27,19 @@ export class ConversionParameterBox extends HyperContainer<ContainerState> {
   protected render() {
     return this.html`
       <div onconnected=${this} ondisconnected=${this}>
-        ${this.getColorSpaceParameterBox()}
+        ${this.getColorSpaceParametersBox()}
       </div>
     `;
   }
 
-  private getColorSpaceParameterBox() {
+  private getColorSpaceParametersBox() {
     const { illuminantType, colorProfileType, conversionParameters } = this.state;
 
     return {
       [ColorSpaceType.HSV]: () => null,
       [ColorSpaceType.YCbCr]: () => null,
       [ColorSpaceType.Lab]: () =>
-        LabParameterBox(illuminantType, colorProfileType, conversionParameters)
+        LabParametersBox(illuminantType, colorProfileType, conversionParameters)
     }[this.state.selectedColorSpace]();
   }
 }
