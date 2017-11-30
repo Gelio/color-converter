@@ -1,5 +1,6 @@
 import { wire } from 'hyperhtml/esm';
 
+import { ColorPoint } from 'models/ColorPoint';
 import {
   ColorProfileType,
   labeledColorProfiles,
@@ -13,7 +14,37 @@ import { changeIlluminantType } from 'actions/input/changeIlluminantType';
 
 import { appStore } from 'appStore';
 import { LabeledSelect } from 'components/LabeledSelect';
-import { ColorPoint } from 'models/ColorPoint';
+import { LabParametersInput } from 'components/LabParametersInputs';
+
+export function LabParametersBox(
+  illuminantType: IlluminantType,
+  colorProfileType: ColorProfileType,
+  conversionParameters: ConversionParameters
+) {
+  return wire()`
+    <div>
+      <label for="illuminant-type-select">Illuminant type: </label>
+      ${LabeledSelect(
+        'illuminant-type-select',
+        labeledIlluminants,
+        illuminantType,
+        onIlluminantChange.bind(null, conversionParameters.whitePoint)
+      )}
+    </div>
+
+    <div>
+      <label for="color-profile-select">Color profile: </label>
+      ${LabeledSelect(
+        'color-profile-select',
+        labeledColorProfiles,
+        colorProfileType,
+        onColorProfileChange.bind(null, conversionParameters)
+      )}
+    </div>
+
+    ${LabParametersInput(conversionParameters)}
+  `;
+}
 
 function onIlluminantChange(currentWhitePoint: ColorPoint, newIlluminant: IlluminantType) {
   if (newIlluminant === IlluminantType.Custom) {
@@ -50,34 +81,4 @@ function onColorProfileChange(
   }
 
   appStore.dispatch(changeColorProfileType(newColorProfile, foundColorProfile.parameters()));
-}
-
-export function LabParametersBox(
-  illuminantType: IlluminantType,
-  colorProfileType: ColorProfileType,
-  conversionParameters: ConversionParameters
-) {
-  return wire()`
-    <div>
-      <label for="illuminant-type-select">Illuminant type: </label>
-      ${LabeledSelect(
-        'illuminant-type-select',
-        labeledIlluminants,
-        illuminantType,
-        onIlluminantChange.bind(null, conversionParameters.whitePoint)
-      )}
-    </div>
-
-    <div>
-      <label for="color-profile-select">Color profile: </label>
-      ${LabeledSelect(
-        'color-profile-select',
-        labeledColorProfiles,
-        colorProfileType,
-        onColorProfileChange.bind(null, conversionParameters)
-      )}
-    </div>
-
-    <pre>${JSON.stringify(conversionParameters, null, 2)}</pre>
-  `;
 }
