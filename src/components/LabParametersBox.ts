@@ -52,7 +52,7 @@ function onColorProfileChange(
   appStore.dispatch(changeColorProfileType(newColorProfile, foundColorProfile.parameters()));
 }
 
-export function LabParameterBox(
+export function LabParametersBox(
   illuminantType: IlluminantType,
   colorProfileType: ColorProfileType,
   conversionParameters: ConversionParameters
