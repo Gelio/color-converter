@@ -53,7 +53,7 @@ export class ConversionParameters {
 
   public static cieRGB(): ConversionParameters {
     return new ConversionParameters(
-      { x: 0.735, y: 0.2650 },
+      { x: 0.735, y: 0.265 },
       { x: 0.274, y: 0.717 },
       { x: 0.167, y: 0.009 },
       { x: 0.3333, y: 0.3333 },
@@ -79,5 +79,17 @@ export class ConversionParameters {
       { x: 0.3127, y: 0.329 },
       1.95
     );
+  }
+
+  public patch(patch: Partial<ConversionParameters>): ConversionParameters {
+    const {
+      redPoint,
+      greenPoint,
+      bluePoint,
+      whitePoint,
+      gamma
+    } = <ConversionParameters>Object.assign({}, this, patch);
+
+    return new ConversionParameters(redPoint, greenPoint, bluePoint, whitePoint, gamma);
   }
 }

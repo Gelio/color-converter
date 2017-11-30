@@ -21,6 +21,8 @@ export function LabParametersBox(
   colorProfileType: ColorProfileType,
   conversionParameters: ConversionParameters
 ) {
+  const labParametersInput = new LabParametersInput(conversionParameters);
+
   return wire()`
     <div>
       <label for="illuminant-type-select">Illuminant type: </label>
@@ -42,7 +44,7 @@ export function LabParametersBox(
       )}
     </div>
 
-    ${LabParametersInput(conversionParameters)}
+    ${labParametersInput}
   `;
 }
 
