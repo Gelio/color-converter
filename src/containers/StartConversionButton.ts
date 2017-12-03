@@ -52,10 +52,7 @@ export class StartConversionButton extends HyperContainer<ContainerState> {
       appState.input.conversionParameters
     );
     const conversionResult = colorSpaceConverter.convertFromImageData(imageData);
-    conversionResult.normalizeComponents();
-
-    const resultImages = conversionResult.components
-      .map(component => component.getImageData())
+    const resultImages = conversionResult.convertComponentsToImageData()
       .map(imageDataConverter.convertImageDataToImage);
 
     appStore.dispatch(conversionFinished(conversionResult, resultImages));

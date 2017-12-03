@@ -10,21 +10,4 @@ export class PartialConversionResult {
     this.width = width;
     this.height = height;
   }
-
-  public getImageData(): ImageData {
-    const imageData = new ImageData(this.width, this.height);
-
-    let imageDataIndex = 0;
-
-    this.values.forEach(value => {
-      // tslint:disable:no-increment-decrement
-      imageData.data[imageDataIndex++] = value;
-      imageData.data[imageDataIndex++] = value;
-      imageData.data[imageDataIndex++] = value;
-      imageData.data[imageDataIndex++] = 255;
-      // tslint:disable:no-increment-decrement
-    });
-
-    return imageData;
-  }
 }
