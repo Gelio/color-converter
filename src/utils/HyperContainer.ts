@@ -30,6 +30,7 @@ export abstract class HyperContainer<ContainerState extends Dictionary> extends 
   protected unsubscribeFromStore() {
     if (this.storeUnsubscribeCallback) {
       this.storeUnsubscribeCallback();
+      this.storeUnsubscribeCallback = undefined;
     }
   }
 
