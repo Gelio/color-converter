@@ -18,7 +18,7 @@ module.exports = {
   devServer: {
     contentBase: CONFIG.distPath
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   module: {
     rules: [
       {
