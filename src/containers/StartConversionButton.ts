@@ -29,10 +29,14 @@ export class StartConversionButton extends HyperContainer<ContainerState> {
     const { conversionAvailable } = this.state;
 
     return this.html`
-      <button
-        onclick=${this.startConversion}
-        onconnected=${this} ondisconnected=${this}
-        disabled=${!conversionAvailable}>RUN</button>
+      <div onconnected=${this} ondisconnected=${this}>
+        <button
+          onclick=${this.startConversion}
+          disabled=${!conversionAvailable}
+        >
+          RUN
+        </button>
+      </div>
     `;
   }
 
