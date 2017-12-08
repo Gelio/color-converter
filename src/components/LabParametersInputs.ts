@@ -132,12 +132,12 @@ function ColorPointRow(
       <td>${label}</td>
       <td>
         <input type="number" class="point-position-input"
-          value=${colorPoint.x} step="0.001" onblur=${handleChange('x')}
+          value=${colorPoint.x} step="0.0001" onblur=${handleChange('x')}
         >
       </td>
       <td>
         <input type="number" class="point-position-input"
-          value=${colorPoint.y} step="0.001" onblur=${handleChange('y')}
+          value=${colorPoint.y} step="0.0001" onblur=${handleChange('y')}
         >
       </td>
     </tr>
